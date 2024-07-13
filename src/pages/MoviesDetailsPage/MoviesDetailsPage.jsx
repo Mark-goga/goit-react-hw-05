@@ -13,7 +13,7 @@ export default function MoviesDetailsPage() {
   const [error, setError] = useState(false);
 
   const location = useLocation();
-  const backLink = useRef(location.state ?? '/');
+  const backLink = useRef(location.state ?? "/movies");
 
   useEffect(() => {
     async function fetchFilm() {
