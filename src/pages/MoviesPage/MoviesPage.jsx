@@ -1,9 +1,10 @@
-import {Link , useLocation , useSearchParams} from 'react-router-dom'
+import { useLocation , useSearchParams} from 'react-router-dom'
 
 import { useEffect, useId, useState } from "react";
 import { getFilmBySearch } from "../../feach-api";
 
 import Loader from "../../components/Loader/Loader";
+import MovieList from "../../components/MovieList/MovieList";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 
 
@@ -17,19 +18,16 @@ export default function MoviesPage() {
   const [loader, setLoader] = useState(false);
   const [error, setError] = useState(false);
   const location = useLocation();
-  
-  function handleChange(evn) {
-    setSearch(evn.currentTarget.value)
-    searchParams.set('query', evn.currentTarget.value);
-    setSearchParams(searchParams);
-  }
-  
-  function handleSubmit() {
+
+  useEffect(() => {
+    if (search === "") {
+      return
+    }
     async function fetchFilm() {
       setLoader(true);
       setError(false);
       try {
-        const data = await getFilmBySearch(search);    
+        const data = await getFilmBySearch(search);
         setFilm(data);
       } catch (error) {
         setError(true);
@@ -38,12 +36,34 @@ export default function MoviesPage() {
       }
     }
     fetchFilm();
+  } , [search])  
+  function handleChange(evn) {
+    setSearch(evn.currentTarget.value)
+    searchParams.set('query', evn.currentTarget.value);
+    setSearchParams(searchParams);
   }
-  useEffect(() => {
-    if (search !== "" && !film && !loader && !error) {
-      handleSubmit();
-    }
-  } , [])
+  
+  // function handleSubmit() {
+  //   async function fetchFilm() {
+  //     setLoader(true);
+  //     setError(false);
+  //     try {
+  //       const data = await getFilmBySearch(search);    
+  //       setFilm(data);
+  //     } catch (error) {
+  //       setError(true);
+  //     } finally {
+  //       setLoader(false);
+  //     }
+  //   }
+  //   fetchFilm();
+  // }
+  // useEffect(() => {
+  //   if (search !== "" && !film && !loader && !error) {
+  //     handleSubmit();
+  //   }
+  // }, [])
+  
     return (
       <div>
         <label htmlFor={inputId}>Search film</label>
@@ -53,23 +73,13 @@ export default function MoviesPage() {
           value={search}
           onChange={handleChange}
         />
-        <button type="button" onClick={handleSubmit}>
+        {/* <button type="button" onClick={handleSubmit}>
           Search
-        </button>
+        </button> */}
         {loader && <Loader />}
         {error && <ErrorMessage />}
         {!loader && !error && film && (
-          <ul>
-            {film.results.map((fil) => {
-              return (
-                <li key={fil.id}>
-                  <Link to={`/movies/${fil.id}`} state={location}>
-                    {fil.title}{" "}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
+          <MovieList films={film.results} location={location} />
         )}
       </div>
     );

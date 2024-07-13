@@ -4,11 +4,11 @@ import {NavLink} from 'react-router-dom'
 import Loader from "../../components/Loader/Loader";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 import { useEffect, useState  , useRef, Suspense} from "react";
-import css from "./MoviesDetailsPage.module.css";
+import css from "./MovieDetailsPage.module.css";
 
-export default function MoviesDetailsPage() {
+export default function MovieDetailsPage() {
   const [film, setFilm] = useState(null);
-  const { moviesId } = useParams();
+  const { movieId } = useParams();
   const [loader, setLoader] = useState(false);
   const [error, setError] = useState(false);
 
@@ -18,19 +18,18 @@ export default function MoviesDetailsPage() {
   useEffect(() => {
     async function fetchFilm() {
       setLoader(true);
-      setError(false); 
+      setError(false);
       try {
-        const data = await getFilmById(moviesId);
+        const data = await getFilmById(movieId);
         setFilm(data);
       } catch (error) {
         setError(true);
-
       } finally {
         setLoader(false);
       }
     }
     fetchFilm();
-  }, [moviesId]);
+  }, [movieId]);
 
   return (
     <div>

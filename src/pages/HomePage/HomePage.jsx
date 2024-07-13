@@ -1,9 +1,10 @@
 import { useEffect, useState} from "react";
-import {Link , useLocation} from 'react-router-dom'
+import {useLocation} from 'react-router-dom'
 import { getTrendFilm } from "../../feach-api";
 
 import Loader from "../../components/Loader/Loader";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
+import MovieList from "../../components/MovieList/MovieList";
 
 import css from './HomePage.module.css'
 
@@ -35,17 +36,7 @@ export default function HomePage() {
       {!loader && !error && films && (
       <div>
         <h1>Trend Film</h1>
-        <ul>
-          {films.map((film) => {
-            return (
-              <li key={film.id}>
-                <Link to={`/movies/${film.id}`} state={location}>
-                  {film.original_title}
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
+        <MovieList films={films} location={location}/>
       </div>)}
     </div>
   );

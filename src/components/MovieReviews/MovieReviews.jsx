@@ -7,9 +7,9 @@ import { useState, useEffect } from "react";
 
 import css from "./MovieReviews.module.css";
 
-export default function MovieCast() {
+export default function MovieReviews() {
   const [film, setFilm] = useState(null);
-  const { moviesId } = useParams();
+  const { movieId } = useParams();
   const [loader, setLoader] = useState(false);
   const [error, setError] = useState(false);
 
@@ -18,7 +18,7 @@ export default function MovieCast() {
       setLoader(true);
       setError(false);
       try {
-        const data = await getFilmReviews(moviesId);
+        const data = await getFilmReviews(movieId);
         setFilm(data);
       } catch (error) {
         setError(true);
@@ -27,7 +27,7 @@ export default function MovieCast() {
       }
     }
     fetchFilm();
-  }, [moviesId]);
+  }, [movieId]);
 
   return (
     <div>

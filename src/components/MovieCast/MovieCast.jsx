@@ -9,7 +9,7 @@ import css from './MovieCast.module.css'
 
 export default function MovieCast() {
   const [film, setFilm] = useState(null);
-  const { moviesId } = useParams();
+  const { movieId } = useParams();
   const [loader, setLoader] = useState(false);
   const [error, setError] = useState(false);
 
@@ -18,7 +18,7 @@ export default function MovieCast() {
       setLoader(true);
       setError(false);
       try {
-        const data = await getFilmActor(moviesId);
+        const data = await getFilmActor(movieId);
         setFilm(data);
       } catch (error) {
         setError(true);
@@ -27,7 +27,7 @@ export default function MovieCast() {
       }
     }
     fetchFilm();
-  }, [moviesId]);
+  }, [movieId]);
 
   return (
     <div>
